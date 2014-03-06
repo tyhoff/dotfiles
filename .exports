@@ -1,3 +1,16 @@
+# Pebble
+export PEBBLE_PHONE=192.168.1.149
+export PATH=/Users/tyler/pebble-dev/PebbleSDK-current/bin:$PATH
+
+# rbenv
+eval "$(rbenv init -)"
+
+# brew
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# theos
+export THEOS=/opt/theos
+
 # Make vim the default editor
 export EDITOR="vim"
 

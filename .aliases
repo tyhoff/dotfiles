@@ -5,6 +5,20 @@ alias dt="cd ~/Desktop"
 alias g="git"
 alias t="trash"
 
+# Always show line numbers
+alias 'grep'='grep -n'
+
+# Trash 
+alias t='trash'
+
+# ngrok
+alias 'ngrok'='ngrok -authtoken 8A3o3Y4I2ul6BhYHIy3L'
+
+# Pebble
+alias p='pebble'
+alias pb='pebble build'
+alias pi='pebble install'
+
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
 
