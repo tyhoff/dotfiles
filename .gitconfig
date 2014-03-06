@@ -1,0 +1,10 @@
+[user]
+    email = tyhoffman1@gmail.com
+    name = Tyler H
+[push]
+    default = simple
+[filter "media"]
+    clean = git-media-clean %f
+    smudge = git-media-smudge %f
+[color]
+    ui = auto
