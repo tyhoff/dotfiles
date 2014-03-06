@@ -1,0 +1,29 @@
+ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+
+# Make sure we’re using the latest Homebrew
+update
+
+# Upgrade any already-installed formulae
+upgrade
+
+# Install more recent versions of some OS X tools
+brew install vim --override-system-vi
+brew install cppcheck
+brew install dpkg
+brew install gibo
+brew install git
+brew install hub
+brew install lftp
+brew install node
+brew install postgresql
+brew install q
+brew install rbenv
+brew install rename
+brew install sqlite
+brew install tmux
+brew install trash
+brew install tree
+brew install wget
+
+# Remove outdated versions from the cellar
+cleanup
