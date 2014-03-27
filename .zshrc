@@ -47,4 +47,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git hub zsh-syntax-highlighting brew osx extract)
 
+# Z
+. ~/Dropbox/dev/z/z.sh
+
 source $ZSH/oh-my-zsh.sh
