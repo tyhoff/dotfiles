@@ -1,5 +1,5 @@
 # rbenv
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 # brew
 export PATH=$HOME/bin:/usr/local/bin:$PATH
