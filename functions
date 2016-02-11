@@ -1,0 +1,119 @@
+# Copy top git log commit
+glcp() {
+	echo "cherry-picked `git log | head -n 1 |  awk '{ print $2 }' | cut -c 1-7`" | tr -d '\n'| pbcopy
+}
+
+stashgrep() {
+  for i in `git stash list | awk -F ':' '{print $1}'`; do
+    git stash show -p $i | grep -H --label="$i" "$1"
+  done
+}
+
+# Create a new directory and enter it
+function mkd() {
+	mkdir -p "$@" && cd "$@"
+}
+
+# Determine size of a file or total size of a directory
+function fs() {
+	if du -b /dev/null > /dev/null 2>&1; then
+		local arg=-sbh
+	else
+		local arg=-sh
+	fi
+	if [[ -n "$@" ]]; then
+		du $arg -- "$@"
+	else
+		du $arg .[^.]* *
+	fi
+}
+
+# Start an HTTP server from a directory, optionally specifying the port
+function server() {
+	local port="${1:-8000}"
+	sleep 1 && open "http://localhost:${port}/" &
+	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
+	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
+	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
+}
+
+# Add note to Notes.app (OS X 10.8)
+# Usage: `note 'title' 'body'` or `echo 'body' | note`
+# Title is optional
+function note() {
+	local title
+	local body
+	if [ -t 0 ]; then
+		title="$1"
+		body="$2"
+	else
+		title=$(cat)
+	fi
+	osascript >/dev/null <<EOF
+tell application "Notes"
+	tell account "iCloud"
+		tell folder "Notes"
+			make new note with properties {name:"$title", body:"$title" & "<br><br>" & "$body"}
+		end tell
+	end tell
+end tell
+EOF
+}
+
+# Add reminder to Reminders.app (OS X 10.8)
+# Usage: `remind 'foo'` or `echo 'foo' | remind`
+function remind() {
+	local text
+	if [ -t 0 ]; then
+		text="$1" # argument
+	else
+		text=$(cat) # pipe
+	fi
+	osascript >/dev/null <<EOF
+tell application "Reminders"
+	tell the default list
+		make new reminder with properties {name:"$text"}
+	end tell
+end tell
+EOF
+}
+
+# `s` with no arguments opens the current directory in Sublime Text, otherwise
+# opens the given location
+function s() {
+	if [ $# -eq 0 ]; then
+		subl .
+	else
+		subl "$@"
+	fi
+}
+
+# `v` with no arguments opens the current directory in Vim, otherwise opens the
+# given location
+function v() {
+	if [ $# -eq 0 ]; then
+		vim .
+	else
+		vim "$@"
+	fi
+}
+
+# `o` with no arguments opens current directory, otherwise opens the given
+# location
+function o() {
+	if [ $# -eq 0 ]; then
+		open .
+	else
+		open "$@"
+	fi
+}
+
+# `tre` is a shorthand for `tree` with hidden files and color enabled, ignoring
+# the `.git` directory, listing directories first. The output gets piped into
+# `less` with options to preserve color and line numbers, unless the output is
+# small enough for one screen.
+function tre() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX
+}
+
+source $HOME/.functions_pebble

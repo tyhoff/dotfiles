@@ -1,0 +1,52 @@
+# brew
+export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# go path
+export GOPATH=$HOME/dev/go
+export PATH=$GOPATH/bin:$PATH
+
+# pebble arm toolchain
+export PATH=$HOME/arm-cs-tools/bin:$PATH
+
+# pebble SDK
+# export PATH=$HOME/pebble-dev/PebbleSDK-current/bin:$PATH
+
+# pebble Pebble SDK Test path
+export PATH=$HOME/pebble-test/bin:$PATH
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+# theos
+export THEOS=/opt/theos
+
+# Make vim the default editor
+export EDITOR="vim"
+
+# Larger bash history (allow 32³ entries; default is 500)
+export HISTSIZE=32768
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
+# Make some commands not show up in history
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
+
+# Prefer US English and use UTF-8
+export LANG="en_US"
+export LC_ALL="en_US.UTF-8"
+
+# Highlight section titles in manual pages
+export LESS_TERMCAP_md="$ORANGE"
+
+# Don’t clear the screen after quitting a manual page
+export MANPAGER="less -X"
+
+# Always enable colored `grep` output
+export GREP_OPTIONS="--color=auto"
+
+# Link Homebrew casks in `/Applications` rather than `~/Applications`
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
+export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
+
+source $HOME/.exports_local
+source $HOME/.exports_pebble
