@@ -1,6 +1,6 @@
 [alias]
     tags = tag -l
-    recent = "!r() { cur=$(git rev-parse --abbrev-ref HEAD); git for-each-ref --sort=-committerdate refs/heads/ --format='%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)%(color:reset)' | sed \"s/$cur/* $cur/\" | column -ts'|'; }; r"
+    recent = "!r() { cur=$(git rev-parse --abbrev-ref HEAD); git for-each-ref --sort=-committerdate refs/heads/ --format='%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)%(color:reset)' | sed \"s/$cur/* $cur/\" | column -ts'|' | head -n 15; }; r"
 
 [push]
     default = simple
