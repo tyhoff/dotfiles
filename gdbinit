@@ -1,3 +1,23 @@
+# Disable prompting
+define hook-add-symbol-file
+set confirm off
+end
+
+# PBL-17248 set the charset to get around a libiconv bug
+set charset US-ASCII
+# fix up our python path first since GDB is likely linked with system (not brewed) python
+source /Users/thoffman/dev/tintin/tools/gdb_scripts/gdb_python_path_fix.py
+# source all tools
+source /Users/thoffman/dev/tintin/tools/gdb_scripts/gdb_tintin.py
+source /Users/thoffman/dev/tintin/tools/gdb_scripts/gdb_printers.py
+source /Users/thoffman/dev/tintin/tools/gdb_scripts/gdb_tintin_bluetooth.py
+
+# Enable prompting
+define hookpost-add-symbol-file
+set confirm on
+end
+
+
 # reboot bb2
 define mr
 mon reset

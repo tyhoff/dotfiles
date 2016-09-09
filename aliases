@@ -1,13 +1,17 @@
 # Shortcuts
 
+# icalBuddy
+alias ical="icalbuddy -n eventsToday"
+
 # git
 alias gs="git stash"
 alias gsp="git stash pop"
 alias gbd="git recent"
+alias gbc="git recent-checkout"
+alias grm="git checkout master; git pull; git checkout -; git rebase master"
+alias grc="git rebase --continue"
 
 alias gpcp="git log --oneline -1 | cut -d ' ' -f 2- | tr -d '\n' | pbcopy"
-
-alias ge="subl `git status --short | awk '$1 ~ /^M|A|U/ {print $2}' | tr '\\n' ' '`"
 
 # Always show line numbers
 alias 'grep'='grep -n'
@@ -16,7 +20,7 @@ alias 'grep'='grep -n'
 alias p='pebble'
 alias pb='pebble build'
 alias pi='pebble install'
-alias ko="ps -ef | grep openocd | grep -v grep | awk '{print $2}' | xargs kill -KILL"
+alias ko='ps -ef | grep openocd | grep -v grep | awk " { print $3;}" | xargs kill -KILL'
 
 # Enable aliases to be sudo’ed
 alias sudo='sudo '
