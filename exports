@@ -48,5 +48,4 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
 export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
-source $HOME/.exports_local
-source $HOME/.exports_pebble
+# source $HOME/.exports_local

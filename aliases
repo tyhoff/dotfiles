@@ -44,5 +44,4 @@ alias map="xargs -n1"
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
 
-source $HOME/.aliases_local
-source $HOME/.aliases_pebble
+# source $HOME/.aliases_local
