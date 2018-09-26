@@ -1,24 +1,8 @@
 # brew
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-# go path
-export GOPATH=$HOME/dev/go
-export PATH=$GOPATH/bin:$PATH
-
-# pebble arm toolchain
-export PATH=$HOME/arm-cs-tools/bin:$PATH
-
-# pebble SDK
-# export PATH=$HOME/pebble-dev/PebbleSDK-current/bin:$PATH
-
-# pebble Pebble SDK Test path
-export PATH=$HOME/pebble-test/bin:$PATH
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
-# theos
-export THEOS=/opt/theos
+# arcanist path
+export PATH=$HOME/tools/arcanist/bin:$PATH
 
 # Make vim the default editor
 export EDITOR="vim"
@@ -45,7 +29,5 @@ export GREP_OPTIONS="--color=auto"
 
 # Link Homebrew casks in `/Applications` rather than `~/Applications`
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
-export PYTHONPATH=/usr/local/lib/python2.7/site-packages:$PYTHONPATH
 
 # source $HOME/.exports_local

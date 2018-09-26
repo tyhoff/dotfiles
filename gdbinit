@@ -13,6 +13,8 @@ set print pretty on
 
 set pagination off
 
+set python print-stack full
+
 # save history and save to file
 set history save on
 set history size 10000
@@ -28,3 +30,8 @@ end
 define btall
 thread apply all backtrace
 end
+
+# offsetof
+macro define offsetof(t, f) &((t *) 0)->f)
+
+source ~/.colorize.py

@@ -1,5 +1,16 @@
-# Copy top git log commit
+alias gplot='gnuplot -e "set terminal dumb; set xlabel \"Residuals\"; set x2label \"Residuals\"; plot '"'"'-'"'"' notitle"'
+
+# plot the lines of code in a file per commit
+function git-plot-loc()	{
+    git log --reverse --oneline -- $1 | cut -d " " -f 1 | xargs -I {} sh -c "git show {}:$1 | wc -l" | gplot
+}
+
 glcp() {
+  git log -1 --pretty=%B $1 | pbcopy
+}
+
+# Copy top git log commit
+gcpcp() {
 	echo "cherry-picked `git log | head -n 1 |  awk '{ print $2 }' | cut -c 1-7`" | tr -d '\n'| pbcopy
 }
 
@@ -114,4 +125,23 @@ function o() {
 # small enough for one screen.
 function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX
+}
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# fkill - kill process
+fkill() {
+  local pid
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    echo $pid | xargs kill -${1:-9}
+  fi
 }

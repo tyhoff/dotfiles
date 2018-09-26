@@ -1,12 +1,3 @@
-include () {
-    [[ -f "$1" ]] && source "$1"
-}
-
-for file in ~/.{exports,aliases,functions,extra}; do
-    [ -r "$file" ] && source "$file"
-done
-unset file
-
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -60,3 +51,12 @@ source ~/.fzf.zsh
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
+
+include () {
+    [[ -f "$1" ]] && source "$1"
+}
+
+for file in ~/.{exports,aliases,functions,extra,stgitrc,fitbit}; do
+    [ -r "$file" ] && source "$file"
+done
+unset file

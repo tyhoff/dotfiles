@@ -4,10 +4,15 @@
 alias gs="git stash"
 alias gsp="git stash pop"
 alias gbd="git recent"
-
+alias gbc="git recent-checkout"
+alias grm="git checkout develop && git pull && git checkout - && git rebase develop"
 alias gpcp="git log --oneline -1 | cut -d ' ' -f 2- | tr -d '\n' | pbcopy"
-
 alias ge="subl `git status --short | awk '$1 ~ /^M|A|U/ {print $2}' | tr '\\n' ' '`"
+alias gsub="git submodule update --recursive --init"
+alias gpuf="git push -u origin \"$(git rev-parse --abbrev-ref HEAD)\" --force"
+
+# invoke
+alias i="invoke"
 
 # Always show line numbers
 alias 'grep'='grep -n'
