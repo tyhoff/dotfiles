@@ -46,7 +46,7 @@ source $ZSH/oh-my-zsh.sh
 
 source ~/.fzf.zsh
 
-. `brew --prefix`/etc/profile.d/z.sh
+. /usr/local/etc/profile.d/z.sh
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 
@@ -56,7 +56,7 @@ include () {
     [[ -f "$1" ]] && source "$1"
 }
 
-for file in ~/.{exports,aliases,functions,extra,stgitrc,fitbit}; do
+for file in ~/.{exports,aliases,functions,extra,stgitrc}; do
     [ -r "$file" ] && source "$file"
 done
 unset file

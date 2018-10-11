@@ -14,6 +14,7 @@
             "~/.gdbinit": "gdbinit",
             "~/.gitignore_global": "gitignore_global",
             "~/.oh-my-zsh": "oh-my-zsh/",
+            "~/.stgitrc": "stgitrc",
             "~/.zshrc": "zshrc"
         }
     },

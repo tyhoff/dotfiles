@@ -1,0 +1,129 @@
+B_MASTER="master"
+
+# Aliases
+alias sfl='stg float'
+alias sgr='stg refresh'
+alias spo='stg pop'
+alias spa='stg pop -a'
+alias spu='stg push'
+alias sr='stg refresh'
+alias ss='stg series --description'
+alias ssi='stg sink'
+alias sst='stg status'
+alias sd='stg delete'
+alias sdt='stg delete --top'
+alias spos='stg pop --spill'
+
+# Add all files and refresh
+sra() {
+    stg add -A
+    stg refresh
+}
+
+# Add all files and refresh
+sri() {
+    stg refresh --index
+}
+
+swork() {
+    if [[ -z "$1" ]]
+    then
+        echo "No patch name given"
+        return 1
+    fi
+
+    stg series | grep -q "^- $1" && stg push "$1"
+    stg series | grep -q "^- $1-WIP" && stg push "$1-WIP"
+}
+
+sunwork() {
+    if [[ -z "$1" ]]
+    then
+        echo "No patch name given"
+        return 1
+    fi
+
+    stg series | grep -q "^[+>] $1-WIP" && stg pop "$1-WIP"
+    stg series | grep -q "^[+>] $1" && stg pop "$1"
+}
+
+
+# Create a new *-WIP patch with all outstanding changes
+swip() {
+    # Add all files to index
+    stg add -A
+    stg rm $(git ls-files --deleted) 2> /dev/null
+
+    # Save off patch names
+    CUR_PATCH=`stg top`
+    WIP_PATCH="$CUR_PATCH-WIP"
+
+    if [[ "$CUR_PATCH" == *-WIP ]]
+    then
+        echo "Adding changes to $WIP_PATCH"
+    else
+        echo "Creating and adding changes to $WIP_PATCH"
+        stg new $WIP_PATCH -m "--wip--"
+    fi
+
+    # Add changes to patch
+    stg refresh
+}
+
+# Unload the *-WIP patch and reset all changes
+sunwip() {
+    CUR_PATCH=`stg top`
+    if [[ "$CUR_PATCH" == *-WIP ]]
+    then
+        stg delete $CUR_PATCH --spill
+        git reset
+    else
+        echo "No WIP patch to pop"
+    fi
+}
+
+sgco() {
+    git checkout $1 || git checkout -b $1
+    stg init
+}
+
+sspl() {
+    CUR_PATCH=`stg top`
+    CUR_PATCH_DESC=`git log --format=%B -n 1`
+
+    stg delete --top --spill
+    stg new --m $CUR_PATCH_DESC $CUR_PATCH
+    git reset .
+}
+
+sres() {
+    if [[ -z "$1" ]]
+    then
+        echo "No commit hash given"
+        return 1
+    fi
+
+    CUR_PATCH=`stg top`
+
+    stg delete --top
+    stg pick -n "$CUR_PATCH" "$1"
+}
+
+ssquash() {
+    if [[ -z "$1" ]]
+    then
+        echo "No base branch given"
+        return 1
+    fi
+
+    CUR_BRANCH=`git rev-parse --abbrev-ref HEAD`
+    echo $CUR_BRANCH
+
+    BASE_COMMIT=`git log "$1"..$CUR_BRANCH --oneline | tail -1 | awk '{print $1;}'`
+    echo $BASE_COMMIT
+
+    git reset $BASE_COMMIT
+    # TODO: Get list of changed files and only add those
+    git add .
+    git commit --amend --no-edit
+}
