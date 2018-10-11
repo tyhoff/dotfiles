@@ -60,3 +60,7 @@ for file in ~/.{exports,aliases,functions,extra,stgitrc}; do
     [ -r "$file" ] && source "$file"
 done
 unset file
+
+export PATH="/Users/tyler/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
