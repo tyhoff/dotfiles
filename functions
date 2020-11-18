@@ -6,7 +6,13 @@ function git-plot-loc()	{
 }
 
 glcp() {
-  git log -1 --pretty=%B $1 | pbcopy
+  git log -1 --pretty=%s $1 | pbcopy && sleep .1 && git log -1 --pretty=%b $1 | pbcopy
+}
+
+stashgrep() {
+  for i in `git stash list | awk -F ':' '{print $1}'`; do
+    git stash show -p $i | grep -i -H --label="$i" "$1"
+  done
 }
 
 # Copy top git log commit
@@ -91,7 +97,7 @@ EOF
 
 # `s` with no arguments opens the current directory in Sublime Text, otherwise
 # opens the given location
-function s() {
+function sub() {
 	if [ $# -eq 0 ]; then
 		subl .
 	else

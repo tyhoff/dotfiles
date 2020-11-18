@@ -3,13 +3,17 @@
     recent = "!r() { cur=$(git rev-parse --abbrev-ref HEAD); git for-each-ref --sort=-committerdate refs/heads/ --format='%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)%(color:reset)' | awk '{printf \"%2d: %s\\n\", NR, $0}'|  column -ts'|' | head -n 30; }; r"
     recent-checkout = "!r() { BRANCH_NUM=\"$1\"; cur=$(git rev-parse --abbrev-ref HEAD); BRANCH_NAME=`git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)' | sed -n \"${BRANCH_NUM}{p;q;}\"`; git checkout $BRANCH_NAME; }; if [ $# -lt 1 ]; then echo \"Missing branch index\"; exit 2; fi; r"
 
+    gpu = !git push -u origin \"$(git rev-parse --abbrev-ref HEAD)\"
+    gpuf = !git push -u origin \"$(git rev-parse --abbrev-ref HEAD)\" --force
+
 [push]
     default = simple
 [pull]
     default = current
+	rebase = false
 [user]
 	name = Tyler Hoffman
-	email = tyhoffman1@gmail.com
+	email = tyler@memfault.com
 [diff]
     submodule = log
     indentHeuristic = true
@@ -17,7 +21,22 @@
     submodule = log
 [core]
 	excludesfile = /Users/tyler.hoffman/.gitignore_global
+	autocrlf = false
 [rerere]
 	enabled = 1
 [merge]
 	conflictstyle = diff3
+[stgit]
+    autokeep = yes
+    diff-opts = -M
+[stgit "color"]
+    # Specify output colors for series commands
+    applied = cyan_foreground
+    current = green_foreground
+    unapplied = white_foreground
+    hidden = red_foreground
+
+
+[remote "origin"]
+
+    fetch = +refs/pull/*/merge:refs/remotes/origin/merge/*

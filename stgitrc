@@ -1,6 +1,8 @@
 B_MASTER="master"
+BRANCH_PREPEND="tyler/"
 
 # Aliases
+alias stb='git checkout stgit-tyler'
 alias sfl='stg float'
 alias sgr='stg refresh'
 alias spo='stg pop'
@@ -82,11 +84,6 @@ sunwip() {
     fi
 }
 
-sgco() {
-    git checkout $1 || git checkout -b $1
-    stg init
-}
-
 sspl() {
     CUR_PATCH=`stg top`
     CUR_PATCH_DESC=`git log --format=%B -n 1`
@@ -126,4 +123,119 @@ ssquash() {
     # TODO: Get list of changed files and only add those
     git add .
     git commit --amend --no-edit
+}
+
+spush() {
+    CUR_BRANCH=`git rev-parse --abbrev-ref HEAD`
+    if [[ "$CUR_BRANCH" != "stgit-tyler" ]]
+    then
+        echo "NO"
+        return 1
+    fi
+
+    CUR_PATCH=`stg top`
+
+    REMOTE_BRANCH_NAME="$BRANCH_PREPEND$CUR_PATCH"
+
+    git checkout -B "$REMOTE_BRANCH_NAME"
+
+    git push -u origin "$REMOTE_BRANCH_NAME" --force
+}
+
+sgrm() {
+    CUR_BRANCH=`git rev-parse --abbrev-ref HEAD`
+    if [[ "$CUR_BRANCH" != "stgit-tyler" ]]
+    then
+        echo "NO"
+        return 1
+    fi
+
+    git checkout "$B_MASTER" && git pull && git checkout "$CUR_BRANCH" && stg rebase "$B_MASTER"
+}
+
+sgco() {
+    CUR_BRANCH=`git rev-parse --abbrev-ref HEAD`
+    if [[ "$CUR_BRANCH" != "stgit-tyler" ]]
+    then
+        echo "NO"
+        return 1
+    fi
+
+    CUR_PATCH=`stg top`
+
+    REMOTE_BRANCH_NAME="$BRANCH_PREPEND$CUR_PATCH"
+
+    git checkout -B "$REMOTE_BRANCH_NAME"
+    return 0
+}
+
+# Phabricator Commands
+
+sdiff() {
+    CUR_PATCH_DESC=`git log --format=%B -n 1`
+    sgco
+
+    if [[ "$?" != "0" ]]
+    then
+        echo "NO"
+        return 1
+    fi
+
+    PYTHONWARNINGS="ignore" arc diff "HEAD^"
+
+    if [[ $CUR_PATCH_DESC != *"Differential Revision:"* ]]; then
+        CUR_DIFF_DESC=`git log --format=%B -n 1`
+        echo $CUR_DIFF_DESC > /tmp/patchdesc.txt
+
+        git checkout -
+
+        stg edit -f /tmp/patchdesc.txt
+        echo "Updated stgit patch description with Phabricator Revision Info"
+    fi
+}
+
+
+sland() {
+    sgco
+
+    if [[ "$?" != "0" ]]
+    then
+        echo "NO"
+        return 1
+    fi
+
+    arc land --onto master --hold
+}
+
+spatch() {
+    if [[ -z "$1" ]]
+    then
+        echo "No Revision given"
+        return 1
+    fi
+
+    # Goes to a temp branch
+    arc patch $1
+
+    # Get the git hash of the top commit
+    CUR_GIT_HASH=`git log --format=%H -n 1~`
+
+    # Go back to original branch
+    git checkout -
+
+    # The name we'll give the patch
+    PATCH_NAME="arc-patch-$1"
+
+    # Check if patch already exists. If so delete it.
+    stg id $PATCH_NAME
+    if [[ "$?" == "0" ]]
+    then
+        echo "Patch already exists. Deleting the old one..."
+        stg delete $PATCH_NAME
+    fi
+
+    echo "Patching as $PATCH_NAME"
+    # Pick the commit and name it appropriately
+    git submodule update --init --recursive
+    stg pick $CUR_GIT_HASH --name $PATCH_NAME
 }

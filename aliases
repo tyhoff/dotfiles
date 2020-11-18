@@ -1,15 +1,25 @@
 # Shortcuts
 
+alias pyc="/Applications/PyCharm.app/Contents/MacOS/pycharm"
+
+# aws-vault
+alias awsv="aws-vault exec tyler -- aws"
+
 # git
 alias gs="git stash"
 alias gsp="git stash pop"
 alias gbd="git recent"
 alias gbc="git recent-checkout"
-alias grm="git checkout develop && git pull && git checkout - && git rebase develop"
+alias grm="git checkout master && git pull && git checkout - && git rebase master"
 alias gpcp="git log --oneline -1 | cut -d ' ' -f 2- | tr -d '\n' | pbcopy"
-alias ge="subl `git status --short | awk '$1 ~ /^M|A|U/ {print $2}' | tr '\\n' ' '`"
 alias gsub="git submodule update --recursive --init"
-alias gpuf="git push -u origin \"$(git rev-parse --abbrev-ref HEAD)\" --force"
+alias gpu="git gpu"
+alias gpuf="git gpuf"
+alias gpo="git push origin"
+alias glo="git log --oneline --pretty='%h %s'"
+
+# Memfault
+alias mem="cd $HOME/dev/memfault/memfault && conda activate memfault"
 
 # invoke
 alias i="invoke"
