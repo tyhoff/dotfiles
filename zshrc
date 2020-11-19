@@ -1,11 +1,7 @@
-# export PATH="$HOME/go/bin/:$PATH"
-
 . "/Users/tyler/miniconda3/etc/profile.d/conda.sh"
 
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
-
-export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
 
 export FZF_DEFAULT_COMMAND="rg --files --hidden"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -62,6 +58,15 @@ autoload -U compinit
 
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export WASMTIME_HOME="$HOME/.wasmtime"
+
+export PATH="$WASMTIME_HOME/bin:$PATH"
+
+
 include () {
     [[ -f "$1" ]] && source "$1"
 }
@@ -70,11 +75,3 @@ for file in ~/.{exports,aliases,functions,extra,stgitrc}; do
     [ -r "$file" ] && source "$file"
 done
 unset file
-
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
-export WASMTIME_HOME="$HOME/.wasmtime"
-
-export PATH="$WASMTIME_HOME/bin:$PATH"
